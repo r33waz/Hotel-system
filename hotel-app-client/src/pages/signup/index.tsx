@@ -19,49 +19,40 @@ function Signup() {
               <p className="text-2xl font-bold text-blue-500">Welcome🙏</p>
               <p className="font-bold text-blue-500 mm">Create your account </p>
             </div>
-            <div className='flex gap-2'>
+            <div className="flex gap-2 ">
               <TextField
                 id="firstname"
                 label="First Name"
                 variant="outlined"
+                className="w-2/4"
               />
               <TextField
                 id="lastname"
                 label="Last Name"
                 variant="outlined"
+                className="w-2/4"
               />
             </div>
-       
-            <div className='flex gap-2'>
+
+            <div className="flex gap-2">
               <TextField
                 id="country"
                 label="Country"
                 variant="outlined"
+                className="w-2/4"
               />
               <TextField
                 id="city"
                 label="City"
                 variant="outlined"
+                className="w-2/4"
               />
             </div>
-  
-              <TextField
-                id="email"
-                label="Email"
-                variant="outlined"
-              />
-              <TextField
-                id="number"
-                label="Phone Number"
-                variant="outlined"
-              />
-              <TextField
-                id="password"
-                label="Password"
-                variant="outlined"
-              />
-         
-       
+
+            <TextField id="email" label="Email" variant="outlined" />
+            <TextField id="number" label="Phone Number" variant="outlined" />
+            <TextField id="password" label="Password" variant="outlined" />
+
             <div className="flex flex-col justify-center gap-3 ">
               <Button variant="contained" className="w-full">
                 Signup
@@ -88,7 +79,7 @@ function Signup() {
               <p>
                 Already have account?
                 <a href="/login" className="text-blue-500 underline">
-                  Sign up
+                  Login
                 </a>
               </p>
             </div>
