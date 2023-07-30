@@ -3,15 +3,17 @@ import ReactDOM from "react-dom";
 import App from "./App.jsx";
 import "./index.css";
 import { BrowserRouter } from "react-router-dom";
-import HeaderComponent from "../src/components/header.components.tsx";
-import FooterComponent from "../src/components/footer.components.tsx";
+
+
+// import { Provider } from "react-redux";
+// import { store } from "../store/store.tsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <HeaderComponent />
-    <BrowserRouter>
-      <App />
-    </BrowserRouter>
-    <FooterComponent />
+    {/* <Provider store={store}> */}
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    {/* </Provider> */}
   </React.StrictMode>
 );

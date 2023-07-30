@@ -1,98 +1,191 @@
-import { Button, TextField } from '@mui/material';
-import React from 'react'
-import { BsFacebook, BsInstagram } from 'react-icons/bs';
-import { FcGoogle } from 'react-icons/fc';
+import { Button, TextField } from "@mui/material";
+import React from "react";
+import { BsFacebook, BsInstagram } from "react-icons/bs";
+import { FcGoogle } from "react-icons/fc";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
+
+const signinSchema = yup.object({
+  firstname: yup.string().required("Firstname is required"),
+  lastname: yup.string().required("Lastnam is required"),
+  country: yup.string().required("Enter your country"),
+  email: yup.string().required("Enter your email"),
+  city: yup.string().required("Enter you city"),
+  number: yup.string().required("Enter your number"),
+  password: yup.string().required("Enter your password"),
+});
+
+type signinForm = {
+  firstname: string;
+  lastname: string;
+  country: string;
+  city: string;
+  email: string;
+  number: string;
+  password: string;
+};
 
 function Signup() {
+  const from = useForm<signinForm>({
+    defaultValues: {
+      firstname: "",
+      lastname: "",
+      country: "",
+      city: "",
+      email: "",
+      number: "",
+      password: "",
+    },
+    resolver: yupResolver(signinSchema),
+  });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = from;
+
+  function onSubmit(data: any) {
+    console.log(data);
+  }
   return (
     <>
-      <div className="flex flex-col items-center justify-center h-screen ">
-        <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 ">
-          <div>
-            <img
-              className="object-cover w-[100%] h-[100%]"
-              src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/22/a1/9c/80/essentia-luxury-hotel.jpg?w=700&h=-1&s=1"
-            />
-          </div>
-          <div className="flex flex-col gap-2 p-1 bg-white border-2">
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="flex flex-col items-center justify-center h-screen ">
+          <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 ">
             <div>
-              <p className="text-2xl font-bold text-blue-500">Welcome🙏</p>
-              <p className="font-bold text-blue-500 mm">Create your account </p>
-            </div>
-            <div className="flex gap-2 ">
-              <TextField
-                id="firstname"
-                label="First Name"
-                variant="outlined"
-                className="w-2/4"
-              />
-              <TextField
-                id="lastname"
-                label="Last Name"
-                variant="outlined"
-                className="w-2/4"
+              <img
+                className="object-cover w-[100%] h-[100%]"
+                src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/22/a1/9c/80/essentia-luxury-hotel.jpg?w=700&h=-1&s=1"
               />
             </div>
-
-            <div className="flex gap-2">
-              <TextField
-                id="country"
-                label="Country"
-                variant="outlined"
-                className="w-2/4"
-              />
-              <TextField
-                id="city"
-                label="City"
-                variant="outlined"
-                className="w-2/4"
-              />
-            </div>
-
-            <TextField id="email" label="Email" variant="outlined" />
-            <TextField id="number" label="Phone Number" variant="outlined" />
-            <TextField id="password" label="Password" variant="outlined" />
-
-            <div className="flex flex-col justify-center gap-3 ">
-              <Button variant="contained" className="w-full">
-                Signup
-              </Button>
-            </div>
-            <div className="flex flex-col items-center gap-3 ">
-              <span className="font-sans text-xs text-gray-500 ">
-                Let's get connected
-              </span>
-              <div className="flex gap-8">
-                <a href="https://www.facebook.com/reewaz.thapa.77/`">
-                  <BsFacebook className="w-6 h-6 text-blue-500" />
-                </a>
-                <a href="https://www.instagram.com/r33waz/">
-                  <BsInstagram className="w-6 h-6 p-1 text-white rounded-md bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500" />
-                </a>
-                <a href="https://www.google.com/">
-                  <FcGoogle href="" className="w-6 h-6 " />
-                </a>
+            <div className="flex flex-col items-center gap-2 p-1 bg-white border-2">
+              <div className="w-full text-center">
+                <p className="text-2xl font-bold ">Welcome🙏</p>
+                <p className="font-bold ">Create your account </p>
               </div>
-            </div>
+              <div className="flex flex-col justify-center w-9/12 gap-2 p-8">
+                <TextField
+                  id="firstname"
+                  label="First Name"
+                  variant="outlined"
+                  className="w-full"
+                  {...register("firstname", { required: true })}
+                />
+                <span className="text-xs text-red-500">
+                  {errors.firstname?.message}
+                </span>
+                <TextField
+                  id="lastname"
+                  label="Last Name"
+                  variant="outlined"
+                  className=""
+                  {...register("lastname", { required: true })}
+                />
+                <span className="text-xs text-red-500">
+                  {errors.lastname?.message}
+                </span>
 
-            <div className="text-sm text-center">
-              <p>
-                Already have account?
-                <a href="/login" className="text-blue-500 underline">
-                  Login
-                </a>
-              </p>
-            </div>
-            <div>
-              <p className="text-xs text-center text-gray-400">
-                ©️Copyright by Denver Hotel 2023
-              </p>
+                <TextField
+                  id="country"
+                  label="Country"
+                  variant="outlined"
+                  className=""
+                  {...register("country", { required: true })}
+                />
+                <span className="text-xs text-red-500">
+                  {errors.country?.message}
+                </span>
+                <TextField
+                  id="city"
+                  label="City"
+                  variant="outlined"
+                  className=""
+                  {...register("city", { required: true })}
+                />
+                <span className="text-xs text-red-500">
+                  {errors.country?.message}
+                </span>
+
+                <TextField
+                  id="email"
+                  label="Email"
+                  variant="outlined"
+                  {...register("email", {
+                    required: true,
+                    pattern: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
+                  })}
+                />
+                <span className="text-xs text-red-500">
+                  {errors.email?.message && "invalid email format"}
+                  
+                </span>
+                <TextField
+                  id="number"
+                  label="Phone Number"
+                  variant="outlined"
+                  {...register("number", { required: true })}
+                />
+                <span className="text-xs text-red-500">
+                  {errors.number?.message}
+                </span>
+                <TextField
+                  id="password"
+                  label="Password"
+                  variant="outlined"
+                  {...register("password", { required: true })}
+                />
+
+                <span className="text-xs text-red-500">
+                  {errors.password?.message}
+                </span>
+              </div>
+
+              <div className="flex flex-col justify-center w-9/12 gap-3 pl-8 pr-8 ">
+                <button
+                  type="submit"
+                  className="p-2 text-white bg-black rounded-md active:bg-white active:text-black active:border-2 active:border-black"
+                >
+                  Signup
+                </button>
+              </div>
+              <div className="flex flex-col items-center gap-3 ">
+                <span className="font-sans text-xs text-gray-500 ">
+                  Let's get connected
+                </span>
+                <div className="flex w-full gap-8">
+                  <a href="https://www.facebook.com/reewaz.thapa.77/`">
+                    <BsFacebook className="w-6 h-6 text-blue-500" />
+                  </a>
+                  <a href="https://www.instagram.com/r33waz/">
+                    <BsInstagram className="w-6 h-6 p-1 text-white rounded-md bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500" />
+                  </a>
+                  <a href="https://www.google.com/">
+                    <FcGoogle href="" className="w-6 h-6 " />
+                  </a>
+                </div>
+              </div>
+
+              <div className="text-sm text-center">
+                <p>
+                  Already have account?
+                  <a href="/login" className="text-blue-500 underline">
+                    Login
+                  </a>
+                </p>
+              </div>
+              <div>
+                <p className="text-xs text-center text-gray-400">
+                  ©️Copyright by Denver Hotel 2023
+                </p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </form>
     </>
   );
 }
 
-export default Signup
+export default Signup;

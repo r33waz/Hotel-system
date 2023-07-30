@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import User from "../model/user.model";
 import jwt from "jsonwebtoken";
 
-//API for signup
+//*API for signup
 export const Signup = async (req: Request, res: Response) => {
   try {
     const { email } = req.body;
@@ -31,7 +31,7 @@ export const Signup = async (req: Request, res: Response) => {
   }
 };
 
-//API for login checking user email and password 
+//*API for login checking user email and password
 
 export const Login = async (req: Request, res: Response) => {
   try {
@@ -48,7 +48,7 @@ export const Login = async (req: Request, res: Response) => {
       const matchpass = await user.matchpassword(password);
       // if password matches user will be loged in sucessfully
       if (matchpass) {
-        const jwtkey= process.env.JWT_WEB_TOKEN || ''
+        const jwtkey = process.env.JWT_WEB_TOKEN || "";
         const token = jwt.sign({ email: user.email }, jwtkey, {
           expiresIn: "3d",
         });
@@ -64,47 +64,66 @@ export const Login = async (req: Request, res: Response) => {
           {
             new: true,
           }
-          );
-          res.status(200).json({
-              status: true,
-              data: {
-                  token: Updateduser?.jwt
-              },
-              message:"User LogedIn Sucessfully ✅"
-          })
+        );
+        res.status(200).json({
+          status: true,
+          data: {
+            token: Updateduser?.jwt,
+          },
+          message: "User LogedIn Sucessfully ✅",
+        });
       } else {
-          return res.status(400).json({
-              status: false,
-              data: {
-                  token:""
-              },
-              message:"Invalid Username or Password"
-          })
+        return res.status(400).json({
+          status: false,
+          data: {
+            token: "",
+          },
+          message: "Invalid Username or Password",
+        });
       }
     }
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 };
 
-//API for user logout 
-export const Logout = async (req:Request,res:Response) => {
- try {
-   const { email } = req.body;
-   const user = await User.findOne({ email })
-   if (user) {
-     res.status(200).json({
-       status: true,
-       data: {
-         token:""
-       },
-       message:'User Logout sucessfully'
-     })
-   } else {
-     
-   }
- } catch (error) {
-  
- }
+//*API for user logout
+export const Logout = async (req: Request, res: Response) => {
+  try {
+    const { email } = req.body;
+    const user = await User.findOne({ email });
+    if (user) {
+      res.status(200).json({
+        status: true,
+        data: {
+          token: "",
+        },
+        message: "User Logout sucessfully",
+      });
+    } else {
+    }
+  } catch (error) {}
+};
 
-}
+//*API to delete user
+
+export const deleteUser = async (req: Request, res: Response) => {
+  try {
+    const id  = req.params.id;
+    const user = await User.findById(id)
+    if (!user) {
+      return res.status(400).json({
+        status: false,
+        message:"No such user found"
+      })
+    } else {
+      const deleteduser = await User.findByIdAndDelete(id)
+      if (deleteduser) {
+        return res.status(200).json({
+          status: true,
+          message:'User deleted sucessfully ✅'
+        })
+      }
+    }
+  } catch (error) {}
+};

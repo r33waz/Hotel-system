@@ -5,15 +5,39 @@ import { Button} from "@mui/material";
 import { FcGoogle } from "react-icons/fc";
 import { BsFacebook, BsInstagram } from "react-icons/bs";
 import {useForm} from 'react-hook-form'
-import { postData } from "../../../services/axios.service";
-import { errortoast, sucesstoast } from "../../../services/tostify.service";
+import { postData } from "../../services/axios.service";
+import { errortoast, sucesstoast } from "../../services/tostify.service";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from 'yup'
+
+  const loginSchema = yup.object({
+    username: yup.string().required("Username is required"),
+    password: yup.string().required("Password is required"),
+  });
+
+type loginform = {
+  username: string,
+  password:string
+  }
 
 function Login() {
-  const { register, handleSubmit ,formState:{errors}} = useForm()
+  const form = useForm<loginform>({
+    defaultValues: {
+      username: "",
+      password: "",
+    },
+    resolver: yupResolver(loginSchema),
+  });
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = form;
  
  async function onSubmit(data: any) {
     console.log(data)
-    const resp = await postData("/users/login", data);
+    const resp = await postData('/users/login', data);
     console.log(resp)
     if (resp && resp.status) {
       sucesstoast(resp.message);
@@ -44,7 +68,7 @@ function Login() {
                 {...register("username", { required: true })}
               />
               <span className="-mt-4 text-red-500">
-                {errors.username && "Username is required"}
+                {errors.username?.message}
               </span>
               <TextField
                 id="password"
@@ -53,7 +77,7 @@ function Login() {
                 {...register("password", { required: true })}
               />
               <span className="-mt-4 text-red-500">
-                {errors.password && "Password is required"}
+                {errors.password?.message}
               </span>
               <div className="flex flex-col justify-center gap-3 ">
                 <Button variant="contained" className="w-full" type="submit">
@@ -84,7 +108,7 @@ function Login() {
               <div className="text-sm text-center">
                 <p>
                   Dont't have an account?
-                  <a href="/">Signup</a>
+                  <a href="/" className="text-blue-500">Signup</a>
                 </p>
               </div>
               <div>
