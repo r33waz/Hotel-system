@@ -36,6 +36,8 @@ export const Signup = async (req: Request, res: Response) => {
 export const Login = async (req: Request, res: Response) => {
   try {
     const { email, password } = req.body;
+    console.log(email)
+    console.log(password)
     const user: any = await User.findOne({ email });
     console.log(user);
     if (!user) {
@@ -65,7 +67,9 @@ export const Login = async (req: Request, res: Response) => {
             new: true,
           }
         );
-        res.status(200).json({
+        return res.cookie("acess_token", token, {
+          httpOnly:true
+        }).status(200).json({
           status: true,
           data: {
             token: Updateduser?.jwt,
@@ -90,8 +94,8 @@ export const Login = async (req: Request, res: Response) => {
 //*API for user logout
 export const Logout = async (req: Request, res: Response) => {
   try {
-    const { email } = req.body;
-    const user = await User.findOne({ email });
+    const id= req.params.id;
+    const user = await User.findById(id);
     if (user) {
       res.status(200).json({
         status: true,
@@ -127,3 +131,26 @@ export const deleteUser = async (req: Request, res: Response) => {
     }
   } catch (error) {}
 };
+
+
+//* API to find all users
+
+export const getusers = async (req:Request,res:Response) => {
+  try {
+    const user = await User.find({})
+    if (user) {
+      return res.status(200).json({
+        status: true,
+        data: user,
+        message:'Fetched all user'
+      })
+    } else {
+      return res.status(400).json({
+        status: false,
+        message:'Canot fetched users'
+      })
+    }
+  } catch (error) {
+    
+  }
+}

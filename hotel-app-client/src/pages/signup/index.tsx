@@ -1,14 +1,19 @@
 import { Button, TextField } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import { BsFacebook, BsInstagram } from "react-icons/bs";
 import { FcGoogle } from "react-icons/fc";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
+import {  postDataJwt } from "../../services/axios.service";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { errortoast, sucesstoast } from "../../services/tostify.service";
+import { Gettoken } from "../../utils/helper";
+import { login } from "../login/auth";
 
 const signinSchema = yup.object({
-  firstname: yup.string().required("Firstname is required"),
-  lastname: yup.string().required("Lastnam is required"),
+  fullname: yup.string().required("Firstname is required"),
   country: yup.string().required("Enter your country"),
   email: yup.string().required("Enter your email"),
   city: yup.string().required("Enter you city"),
@@ -17,8 +22,7 @@ const signinSchema = yup.object({
 });
 
 type signinForm = {
-  firstname: string;
-  lastname: string;
+  fullname: string;
   country: string;
   city: string;
   email: string;
@@ -27,10 +31,14 @@ type signinForm = {
 };
 
 function Signup() {
+  const navigate = useNavigate();
+  const token = Gettoken()
+  const dispatch = useDispatch()
+
+  
   const from = useForm<signinForm>({
     defaultValues: {
-      firstname: "",
-      lastname: "",
+      fullname: "",
       country: "",
       city: "",
       email: "",
@@ -46,8 +54,17 @@ function Signup() {
     formState: { errors },
   } = from;
 
-  function onSubmit(data: any) {
+  async function onSubmit(data: any) {
     console.log(data);
+    const resp = await postDataJwt("/users/signup",token, data);
+    console.log(resp);
+    if (resp.status) {
+      dispatch(login(resp.data))
+      navigate("/login");
+      sucesstoast(resp.message);
+    } else {
+      errortoast(resp.message);
+    }
   }
   return (
     <>
@@ -67,26 +84,19 @@ function Signup() {
               </div>
               <div className="flex flex-col justify-center w-9/12 gap-2 p-8">
                 <TextField
-                  id="firstname"
-                  label="First Name"
+                  id="fullname"
+                  label="Full name"
                   variant="outlined"
                   className="w-full"
-                  {...register("firstname", { required: true })}
+                  {...register("fullname", {
+                    required: true,
+                    minLength: 3,
+                    maxLength: 10,
+                  })}
                 />
                 <span className="text-xs text-red-500">
-                  {errors.firstname?.message}
+                  {errors.fullname?.message}
                 </span>
-                <TextField
-                  id="lastname"
-                  label="Last Name"
-                  variant="outlined"
-                  className=""
-                  {...register("lastname", { required: true })}
-                />
-                <span className="text-xs text-red-500">
-                  {errors.lastname?.message}
-                </span>
-
                 <TextField
                   id="country"
                   label="Country"
@@ -119,13 +129,15 @@ function Signup() {
                 />
                 <span className="text-xs text-red-500">
                   {errors.email?.message && "invalid email format"}
-                  
                 </span>
                 <TextField
                   id="number"
                   label="Phone Number"
                   variant="outlined"
-                  {...register("number", { required: true })}
+                  {...register("number", {
+                    required: true,
+                    pattern: /^[+]{1}(?:[0-9\-\(\)\/\.]\s?){6, 15}[0-9]{1}$/,
+                  })}
                 />
                 <span className="text-xs text-red-500">
                   {errors.number?.message}

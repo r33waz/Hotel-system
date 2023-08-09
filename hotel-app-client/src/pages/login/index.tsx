@@ -1,29 +1,36 @@
 import * as React from "react";
 import TextField from "@mui/material/TextField";
-import Link from "@mui/material/Link";
-import { Button} from "@mui/material";
+
+import { Button } from "@mui/material";
 import { FcGoogle } from "react-icons/fc";
 import { BsFacebook, BsInstagram } from "react-icons/bs";
-import {useForm} from 'react-hook-form'
-import { postData } from "../../services/axios.service";
+import { useForm } from "react-hook-form";
+import {  postDataJwt } from "../../services/axios.service";
 import { errortoast, sucesstoast } from "../../services/tostify.service";
 import { yupResolver } from "@hookform/resolvers/yup";
-import * as yup from 'yup'
+import * as yup from "yup";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { login } from "./auth";
+import { Gettoken } from "../../utils/helper";
 
-  const loginSchema = yup.object({
-    username: yup.string().required("Username is required"),
-    password: yup.string().required("Password is required"),
-  });
+const loginSchema = yup.object({
+  email: yup.string().required("Username is required"),
+  password: yup.string().required("Password is required"),
+});
 
 type loginform = {
-  username: string,
-  password:string
-  }
+  email: string;
+  password: string;
+};
 
 function Login() {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const token = Gettoken();
   const form = useForm<loginform>({
     defaultValues: {
-      username: "",
+      email: "",
       password: "",
     },
     resolver: yupResolver(loginSchema),
@@ -34,13 +41,18 @@ function Login() {
     handleSubmit,
     formState: { errors },
   } = form;
- 
- async function onSubmit(data: any) {
-    console.log(data)
-    const resp = await postData('/users/login', data);
-    console.log(resp)
-    if (resp && resp.status) {
+
+  async function onSubmit(data: any) {
+    console.log(data);
+    const resp = await postDataJwt("/users/login", token, data);
+    if (resp.status) {
+      localStorage.setItem("token",resp.data.token)
+      console.log(resp.data)
+      dispatch(login(resp.data));
+      navigate("/home");
       sucesstoast(resp.message);
+    } else {
+      errortoast(resp.message);
     }
   }
   return (
@@ -62,13 +74,13 @@ function Login() {
                 <p className="font-bold text-blue-500 mm">Login to continue</p>
               </div>
               <TextField
-                id="username"
-                label="Username"
+                id="email"
+                label="Email"
                 variant="outlined"
-                {...register("username", { required: true })}
+                {...register("email", { required: true })}
               />
               <span className="-mt-4 text-red-500">
-                {errors.username?.message}
+                {errors.email?.message}
               </span>
               <TextField
                 id="password"
@@ -108,7 +120,9 @@ function Login() {
               <div className="text-sm text-center">
                 <p>
                   Dont't have an account?
-                  <a href="/" className="text-blue-500">Signup</a>
+                  <a href="/" className="text-blue-500">
+                    Signup
+                  </a>
                 </p>
               </div>
               <div>

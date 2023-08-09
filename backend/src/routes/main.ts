@@ -1,9 +1,11 @@
-import express from 'express'
-import userRoute from '../routes/user.routes'
-import hotelRoute from './hotel.routes'
+import express from "express";
+import userRoute from "../routes/user.routes";
 
-const router = express.Router()
+import roomRoute from "./room.routes";
+
+const router = express.Router();
 
 router.use("/users", userRoute);
-router.use("/hotel",hotelRoute)
-export default router
+
+router.use("/room", roomRoute);
+export default router;
