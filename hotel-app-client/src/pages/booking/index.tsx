@@ -5,9 +5,15 @@ import useSWR from "swr";
 
 import BookingComponent from "../../components/booking.components";
 import { ThreeCircles } from "react-loader-spinner";
+import { DatePicker, Space } from "antd";
+const { RangePicker } = DatePicker;
+import moment from 'moment'
+
 function Booking() {
   const token = Gettoken();
   const [room, setRoom] = useState([]);
+  const [checkindate, setChechkindate] = useState('')
+  const[checkoutdate,setChechoutdate]=useState('')
   
 //   console.log(room);
   //*Using two ways to fetch data from Rest API
@@ -32,25 +38,47 @@ function Booking() {
     setRoom(data?.data);
 
     if (isLoading) {
-      setTimeout(() => {},2000);
+      setTimeout(() => {},5000);
     }
     
     
   }, [data]);
+
+  function filterbydate(dates: any) {
+    // console.log(dates)
+    // console.log(moment(dates[0]).format('DD-MM-YYYY'))
+    // console.log(moment(dates[1]).format("DD-MM-YYYY"));
+    setChechkindate(dates[0].format("DD-MM-YYYY"));
+    setChechoutdate(dates[1].format("DD-MM-YYYY"));
+  
+  }
 
      
   return (
     <>
       {isLoading ? (
         <div className="flex items-center justify-center h-screen">
-          <ThreeCircles />
+          <ThreeCircles
+            height="100"
+            width="100"
+            color="#FFFFFF"
+            wrapperStyle={{}}
+            wrapperClass=""
+            visible={true}
+            ariaLabel="three-circles-rotating"
+            outerCircleColor=""
+            innerCircleColor=""
+            middleCircleColor=""
+          />
         </div>
       ) : (
         <div className="container p-8 mx-auto">
-          <div></div>
-          <span className="text-lg font-bold text-white">
-            Rooms we have {room?.length} rooms
-          </span>
+          <div className="flex flex-col w-1/5 pb-5">
+            <span className="text-lg font-bold text-white">
+              Pick booking date
+            </span>
+            <RangePicker  onChange={filterbydate} />
+          </div>
           {/* {
           room?.filter((type) => {
            return type?.roomType === "Couple Room"
@@ -58,7 +86,12 @@ function Booking() {
         } */}
           <div className="grid gap-3 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2">
             {room?.map((item: any) => (
-              <BookingComponent posts={item} key={item.id} />
+              <BookingComponent
+                posts={item}
+                key={item.id}
+                checkindate={checkindate}
+                checkoutdate={checkoutdate}
+              />
             ))}
           </div>
         </div>

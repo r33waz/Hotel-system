@@ -4,8 +4,9 @@ import { set } from 'react-hook-form';
 import { ThreeCircles } from 'react-loader-spinner';
 import { Link } from 'react-router-dom';
 
-function BookingComponent({ posts }) {
-
+function BookingComponent({ posts,checkindate,checkoutdate }) {
+  console.log(checkindate)
+  console.log(checkoutdate)
   return (
     <>
 
@@ -28,21 +29,21 @@ function BookingComponent({ posts }) {
               <span className="text-lg ">{posts?.maxPeople}</span>
             </div>
             <div>
-              <span className="text-xl font-semibold">Type:</span>
-              <span className="text-lg">Type: {posts?.roomType}</span>
+              <span className="text-xl font-semibold">Type: </span>
+              <span className="text-lg">{posts?.roomType}</span>
             </div>
             <div>
-              <span className="text-xl font-semibold">Number :</span>
+              <span className="text-xl font-semibold">Number : </span>
               <span className="text-lg">{posts?.phoneNumber}</span>
             </div>
             <div>
-              <span className="text-xl font-semibold">Price Per Day :</span>
-              <span className="text-lg ">Rs {posts?.pricePerDay}</span>
+              <span className="text-xl font-semibold">Price Per Day : </span>
+              <span className="text-lg ">Rs{posts?.pricePerDay}</span>
             </div>
             <div className="flex gap-3">
               <Sliders posts={posts} />
               <button className="p-2 text-white bg-black rounded-sm ">
-                  <Link to={`/bookroom/${posts._id}`}>Book Room</Link>
+                  <Link to={`/bookroom/${posts._id}/${checkindate}/${checkoutdate}`}>Book Room</Link>
               </button>
             </div>
           </div>

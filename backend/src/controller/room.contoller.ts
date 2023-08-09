@@ -61,7 +61,7 @@ export const getroombyid = async (req: Request, res: Response) => {
     } else {
       return res.status(400).json({
         status: false,
-        message:`Room of this id${id} not found`
+        message:`Room of this id:${id} not found`
       })
     }
   } catch (error) {
