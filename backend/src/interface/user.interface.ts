@@ -4,7 +4,7 @@ import  { Document } from "mongoose";
 // setting the data types of each variable
 interface Userinterface extends Document{
     fullname: string,
-    roles: string,
+    isAdmin: boolean,
     jwt:string,
     country: string,
     city: string,

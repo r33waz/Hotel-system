@@ -28,7 +28,7 @@ const RoomSchema = new mongoose.Schema<Roominterface>(
       type:[String]
     },
     bookings: {
-      type:[String] 
+      type: [] 
     },
     roomType: {
       type: String,

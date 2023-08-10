@@ -11,10 +11,9 @@ const UserSchema = new mongoose.Schema<Userinterface>(
     country: {
       type: String,
     },
-    roles: {
-      type: String,
-      default: "User",
-      enum: ["Admin", "User"],
+    isAdmin: {
+      type: Boolean,
+      default: false,
     },
     jwt: {
       type: String,

@@ -11,10 +11,6 @@ const BookingSchema = new mongoose.Schema<Bookinginterface>(
             type: String,
             required:true
         },
-        userid: {
-            type: String,
-            required : true
-        },
         checkindate: {
             type: String,
             required: true
