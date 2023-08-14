@@ -3,7 +3,7 @@ import * as Dialog from "@radix-ui/react-dialog";
 import Slider from "react-slick";
 
 function Sliders({ posts }) {
-  console.log(posts);
+  // console.log(posts);
   // function LeftArrow({ onClick }) {
   //   return (
   //     <div onClick={onClick}>

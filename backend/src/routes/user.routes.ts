@@ -1,4 +1,4 @@
-import express from 'express'
+import express from "express";
 import {
   Login,
   Logout,
@@ -6,14 +6,17 @@ import {
   deleteUser,
   getusers,
 } from "../controller/user.controller";
-import { authorization, authorize } from '../middleware/auth.middleware';
+
 
 const router = express.Router();
 
-router.post('/signup', Signup)
-router.post('/login', Login)
-router.post('/logout/:id', Logout)
-router.delete("/delete/:id",authorization as any,authorize('Admin') as any, deleteUser);
+router.post("/signup", Signup);
+router.post("/login", Login);
+router.post("/logout/:id", Logout);
+router.delete(
+  "/delete/:id",
+  deleteUser
+);
 router.get("/getalluser", getusers);
 
-export default router
+export default router;

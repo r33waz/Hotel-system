@@ -5,7 +5,7 @@ import { Button } from "@mui/material";
 import { FcGoogle } from "react-icons/fc";
 import { BsFacebook, BsInstagram } from "react-icons/bs";
 import { useForm } from "react-hook-form";
-import {  postDataJwt } from "../../services/axios.service";
+import { postDataJwt } from "../../services/axios.service";
 import { errortoast, sucesstoast } from "../../services/tostify.service";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { login } from "./auth";
 import { Gettoken } from "../../utils/helper";
+import loginSVG from '../../assets/Mobile login.gif'
 
 const loginSchema = yup.object({
   email: yup.string().required("Username is required"),
@@ -43,13 +44,15 @@ function Login() {
   } = form;
 
   async function onSubmit(data: any) {
-    console.log(data);
+    // console.log(data);
     const resp = await postDataJwt("/users/login", token, data);
+    console.log(resp)
     if (resp.status) {
-      localStorage.setItem("token",resp.data.token)
-      console.log(resp.data)
+      // console.log(resp.data);
+     
       dispatch(login(resp.data));
-      navigate("/home");
+       localStorage.setItem("User", JSON.stringify(resp.data));
+      navigate("/booking");
       sucesstoast(resp.message);
     } else {
       errortoast(resp.message);
@@ -63,8 +66,9 @@ function Login() {
             <div>
               <img
                 className="object-cover w-[100%] h-[100%]"
-                src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/22/a1/9c/80/essentia-luxury-hotel.jpg?w=700&h=-1&s=1"
+                src={loginSVG}
               />
+              
             </div>
             <div className="flex flex-col gap-5 p-1 bg-white border-2">
               <div>

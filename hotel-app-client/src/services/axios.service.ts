@@ -32,3 +32,15 @@ export const getData = async (url: string,jwt:string) => {
   }
 }
 
+export const deletedata = async (url:any,jwt:any) => {
+  try {
+    const response = await axios.delete(`${SERVER_URL}${url}`, {
+      headers: {
+        Authorization:`Bearer ${jwt}`,
+      }
+    })
+    return response.data
+  } catch (error) {
+    
+  }
+}

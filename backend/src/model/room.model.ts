@@ -6,23 +6,22 @@ const RoomSchema = new mongoose.Schema<Roominterface>(
   {
     name: {
       type: String,
-      required:true
     },
     address: {
       type:String
     },
     maxPeople: {
       type: Number,
-      required:true
+     
     },
     phoneNumber: {
       type: Number,
       unique: true,
-      required:true
+
     },
     pricePerDay: {
       type: Number,
-      required: true,
+
     },
     image: {
       type:[String]
@@ -32,7 +31,7 @@ const RoomSchema = new mongoose.Schema<Roominterface>(
     },
     roomType: {
       type: String,
-      required:true
+
     },
     description: {
       type: String,

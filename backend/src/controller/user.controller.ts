@@ -67,13 +67,15 @@ export const Login = async (req: Request, res: Response) => {
             new: true,
           }
         );
-        return res.cookie("acess_token", token, {
-          httpOnly:true
-        }).status(200).json({
+        return res.status(200).json({
           status: true,
           data: {
             token: Updateduser?.jwt,
-            id:Updateduser?._id
+            id: Updateduser?._id,
+            fullname: Updateduser?.fullname,
+            isAdmin: Updateduser?.isAdmin,
+            number: Updateduser?.number,
+            email:Updateduser?.email
           },
           message: "User LogedIn Sucessfully ✅",
         });

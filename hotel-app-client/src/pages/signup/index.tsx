@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { errortoast, sucesstoast } from "../../services/tostify.service";
 import { Gettoken } from "../../utils/helper";
-import { login } from "../login/auth";
+import signupSVG from '../../assets/Sign up.gif'
 
 const signinSchema = yup.object({
   fullname: yup.string().required("Firstname is required"),
@@ -74,7 +74,7 @@ function Signup() {
             <div>
               <img
                 className="object-cover w-[100%] h-[100%]"
-                src="https://dynamic-media-cdn.tripadvisor.com/media/photo-o/22/a1/9c/80/essentia-luxury-hotel.jpg?w=700&h=-1&s=1"
+                src={signupSVG}
               />
             </div>
             <div className="flex flex-col items-center gap-2 p-1 bg-white border-2">

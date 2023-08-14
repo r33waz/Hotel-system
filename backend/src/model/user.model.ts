@@ -8,6 +8,7 @@ const UserSchema = new mongoose.Schema<Userinterface>(
     fullname: {
       type: String,
     },
+
     country: {
       type: String,
     },
